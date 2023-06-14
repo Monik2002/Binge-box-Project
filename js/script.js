@@ -45,7 +45,7 @@ async function displayPopTVShows() {
     const div = document.createElement("div");
     div.classList.add("card");
     div.innerHTML = `
-    <a href="movie-details.html?id=${show.id}">
+    <a href="tv-details.html?id=${show.id}">
          ${
            show.poster_path
              ? `<img src="https://image.tmdb.org/t/p/w500${show.poster_path}" class="card-img-top" alt="${show.title}"/>`
@@ -389,7 +389,7 @@ async function searchApidata() {
   const api_key = global.api.apiKey;
   const api_url = global.api.apiUrl;
   const url = `https://api.themoviedb.org/3/search/${global.search.type}?api_key=${api_key}&language=en-US&query=${global.search.term}&page=${global.search.page}`;
-  console.log(url);
+  // console.log(url);
   showSpinner();
   const response = await fetch(url);
   const data = await response.json();
