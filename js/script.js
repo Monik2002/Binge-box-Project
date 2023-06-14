@@ -1,8 +1,8 @@
 const global = {
   currentPage: window.location.pathname,
   search: {
-    term: " ",
-    type: " ",
+    term: "",
+    type: "",
     page: 1,
     totalPages: 1,
     totalResults: 0,
@@ -221,6 +221,17 @@ async function search() {
 }
 
 function displaySearchResults(results) {
+  const searchResultsDiv = document.querySelector("#search-results");
+  searchResultsDiv.innerHTML = "";
+  const searchResultshead = document.querySelector("#search-results-heading");
+  searchResultshead.innerHTML = "";
+  const pagi_nation = document.querySelector("#pagination");
+  pagi_nation.innerHTML = "";
+  // console.log(pagi_nation);
+
+  // const searchResultsHeading = document.createElement("h2");
+  // searchResultsHeading.textContent = `Search Results for "${global.search.term}"`;
+  // searchResultsDiv.appendChild(searchResultsHeading);
   results.forEach((result) => {
     const div = document.createElement("div");
     div.classList.add("card");
@@ -260,7 +271,42 @@ function displaySearchResults(results) {
     ).innerHTML = `<h2>${results.length} of ${global.search.totalResults} Results found`;
     document.querySelector("#search-results").appendChild(div);
   });
+  displayPagination();
 }
+
+function displayPagination() {
+  const paginationDiv = document.createElement("div");
+  paginationDiv.classList.add("pagination");
+  paginationDiv.innerHTML = `
+    <button class="btn btn-primary" id="prev" ${
+      global.search.page === 1 ? "disabled" : ""
+    }>Previous</button>
+    <button class="btn btn-primary" id="next" ${
+      global.search.page === global.search.totalPages ? "disabled" : ""
+    }>Next</button>
+    <div class="page-counter">Page ${global.search.page} of ${
+    global.search.totalPages
+  }</div>`;
+  document.querySelector("#pagination").appendChild(paginationDiv);
+  document.querySelector("#prev").addEventListener("click", () => {
+    if (global.search.page > 1) {
+      global.search.page--;
+      newsearch();
+    }
+  });
+  document.querySelector("#next").addEventListener("click", () => {
+    if (global.search.page < global.search.totalPages) {
+      global.search.page++;
+      newsearch();
+    }
+  });
+}
+
+async function newsearch() {
+  const { results, total_pages } = await searchApidata();
+  displaySearchResults(results);
+}
+
 async function displayTopRatedMovies() {
   const { results } = await fetchApidata("movie/top_rated");
   results.forEach((movie) => {
@@ -341,7 +387,9 @@ async function fetchApidata(endpoint) {
 
 async function searchApidata() {
   const api_key = global.api.apiKey;
-  const url = `https://api.themoviedb.org/3/search/${global.search.type}?api_key=${api_key}&language=en-US&query=${global.search.term}`;
+  const api_url = global.api.apiUrl;
+  const url = `https://api.themoviedb.org/3/search/${global.search.type}?api_key=${api_key}&language=en-US&query=${global.search.term}&page=${global.search.page}`;
+  console.log(url);
   showSpinner();
   const response = await fetch(url);
   const data = await response.json();
