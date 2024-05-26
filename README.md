@@ -1,3 +1,5 @@
+**The Movie Database (TMDb) has stopped working in India**
+
 # BingeBoxx
 
 Welcome to BingeBoxx! This website leverages the power of The Movie Database (TMDb) API (https://developer.themoviedb.org) to provide you with a curated collection of top-rated movies and TV shows. Additionally, you can search for any movie or TV show of your choice and access detailed information such as budget, revenue, launch date, and more. 
