@@ -1,4 +1,4 @@
-**The Movie Database (TMDb) has stopped working in India**
+**(The Movie Database (TMDb) has stopped working in India)**
 
 # BingeBoxx
 
